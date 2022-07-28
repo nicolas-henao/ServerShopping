@@ -92,7 +92,7 @@ app.post('/logicalogin', (req, res) => {
             if (bcrypt.compareSync(password, row.password)) {
                 session = req.session;
                 session.userid = email;
-                return res.render('pages/buy');
+                return res.render('pages/shopping');
             }
             return res.send('contraseña o usuario incorrecta');
         }
@@ -100,22 +100,26 @@ app.post('/logicalogin', (req, res) => {
     })
 })
 
-// app.get('/product', (req, res) => {
-//     res.render('pages/buy_copy');
+// app.post('/productagregar', (req, res) => {
+//     res.render('pages/addproduct');
 // });
-// app.post('/product', (req, res) => {
-//     res.render('pages/buy_copy');
-// });
-app.post('/productagregar', (req, res) => {
-    res.render('pages/buy_copy');
+
+app.get('/productagregar', (req, res) => {
+    res.render('pages/addproduct');
 });
+
+app.get('/shopping', (req, res) => {
+    res.render('pages/shopping');
+});
+
 app.post('/productagregar1', (req, res) => {
+
     let name1 = req.body.name1;
     let price = req.body.price;
     let url = req.body.url;
     let id = req.body.id;
 
-    db.run(`INSERT INTO products(name1, price, url, id) VALUES(?, ?, ?, ?)`,
+db.run(`INSERT INTO products(name1, price, url, id) VALUES(?, ?, ?, ?)`,
         [name1, price, url, id],
         function (error) {
             if (!error) {
@@ -127,39 +131,98 @@ app.post('/productagregar1', (req, res) => {
         });
 });
 
-app.get('/product/:iditem', (req, res) => {
-    session = req.session;
-    if (session.userid) {
-        let id = req.params.iditem;
-        email = req.session.userid;
+app.get('/shopping/:idarticle', (req, res) => {
 
-        db.run(`INSERT INTO products(name,price,id,url) VALUES (?,?,?,?)`,
-            [name, id, price,url],
+    session = req.session;
+
+    if (session.userid) {
+        //recogemos el id del articulo a comprar
+        let id = req.params.idarticulo;
+        email = req.session.userid;
+        //validamos el parametro
+
+        db.run(`INSERT INTO shopping(cod_compra,fecha,emailusu,info_product)   VALUES(?,?,?,?)`,
+            [, listo, email, id],
 
             function (error) {
                 if (!error) {
-                    res.render('pages/thanks')
-                    // send email
-                    transporter.sendMail({
-                        from: 'shoppingreen7@gmail.com',
+                    res.render("pages/thanks")
+                    /*transporter.sendMail({
+                        from: 'aquaflorfloristeria@gmail.com',
                         to: email,
-                        subject: 'Realizacion de Compra',
-                        text: 'Hello World?',
-                        html: '<h1>Compra exitosa</h1>'
-                    }).then((res) => { console.log(res); }).catch((err) => { console.log(err); })
+                        subject: 'Test Email Subject',
+                        html: '<img src="https://res.cloudinary.com/dwczm63h6/image/upload/v1654784841/floristeria%20aqua/Tarjeta_de_Visita_Una_Cara_Vertical_Profesional_Morado_y_Rosa_pdmiwk.png" alt="">'
+                    }).then((res) =>{console.log(res);}).catch((err) => {console.log(err);})*/
                 }
                 if (error) {
-                    return console.log("error: ", error);
+                    return console.log("error");
                 }
             }
         )
-
+        //enviamos un correo de confirmacion de compra...
+        //retornamos un mensaje de compra exitosa
     } else {
-        res.render('pages/login');
-    }
-
-    res.render('pages/thanks');
+        res.render('pages/index' )
+    };
 })
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// app.get('/comprar/:id', (req, res) => {
+//     let id = req.params.id;
+    
+//     db.get("SELECT name1, price, url FROM products WHERE id=$id", {
+//         $id: id
+//     },   
+//     function (error) {
+//         if (!error) {
+//             res.render('pages/thanks')
+//             // send email
+//             transporter.sendMail({
+//                 from: 'shoppingreen7@gmail.com',
+//                 to: email,
+//                 subject: 'Realizacion de Compra',
+//                 text: 'Hello World?',
+//                 html: '<h1>Compra exitosa</h1>'
+//             }).then((res) => { console.log(res); }).catch((err) => { console.log(err); })
+//         }
+//         if (error) {
+//             return console.log("error: ", error);
+//         }
+//     })
+    
+//     });
+
+
+
+//         )
+
+//     } else {
+//         res.render('pages/login');
+//     }
+
+//     res.render('pages/thanks');
+// })
 
 
 

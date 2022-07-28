@@ -10,7 +10,7 @@
 </head>
 
 <body>
-    <!-- <ul class="nav">
+    <ul class="nav">
         <li class="nav-item">
             <a class="nav-link active" aria-current="page" href="#">Active</a>
         </li>
@@ -23,16 +23,15 @@
         <li class="nav-item">
             <a class="nav-link disabled">Disabled</a>
         </li>
-    </ul> -->
-    </ul> -->
+    </ul>
 
-    <% data.forEach((producto)=> { %>
+    <% products.forEach((producto)=> { %>
         <div class="card" style="width: 18rem;">
             <img src="<%= producto.url %>" class="card-img-top" alt="...">
             <div class="card-body">
                 <%= producto.producto %>
                     <%= producto.precio %>
-                        <form action="/comprar/<%= producto.id %>" method="get">
+                        <form action="/shopping/<%= producto.id %>" method="get">
                             <button type="submit" class="btn btn-primary">Comprar</button>
                         </form>
             </div>
