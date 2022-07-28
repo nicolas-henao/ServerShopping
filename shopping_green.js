@@ -13,6 +13,7 @@ const cookieParser = require("cookie-parser");
 app.use(cookieParser());
 const sessions = require('express-session');
 const { name } = require('ejs');
+const session = require('express-session');
 const timeEXp = 1000 * 60 * 60 * 24;
 app.use(sessions({
     secret: 'nbiocnonltaesylor',
@@ -74,10 +75,10 @@ app.post('/logicaregister', (req, res) => {
         to: email,
         subject: 'Verificacion de registro',
         text: 'Hello World?',
-        html: '<h1>Registro exitoso</h1>'
+        html: '<img src="https://res.cloudinary.com/servicio-de-aprendizaje-nacional-sena/image/upload/v1659013932/Shopping_green/proyecto/Tarjeta_Cuadrada_Cumplea%C3%B1os_Infantil_Verde_ij4cet.png" alt="Registro Exitoso">'
     })
 
-    res.render('pages/registerok', { name: name, lastName: lastName})
+    res.render('pages/registerok', { name: name, lastName: lastName});
 })
 
 app.post('/logicalogin', (req, res) => {
@@ -92,7 +93,7 @@ app.post('/logicalogin', (req, res) => {
             if (bcrypt.compareSync(password, row.password)) {
                 session = req.session;
                 session.userid = email;
-                return res.render('pages/shopping');
+                return res.render('pages/thankslogin');
             }
             return res.send('contraseña o usuario incorrecta');
         }
@@ -100,36 +101,20 @@ app.post('/logicalogin', (req, res) => {
     })
 })
 
-// app.post('/productagregar', (req, res) => {
-//     res.render('pages/addproduct');
-// });
 
-app.get('/productagregar', (req, res) => {
-    res.render('pages/addproduct');
-});
-
-app.get('/shopping', (req, res) => {
-    res.render('pages/shopping');
-});
-
-app.post('/productagregar1', (req, res) => {
-
-    let name1 = req.body.name1;
-    let price = req.body.price;
-    let url = req.body.url;
-    let id = req.body.id;
-
-db.run(`INSERT INTO products(name1, price, url, id) VALUES(?, ?, ?, ?)`,
-        [name1, price, url, id],
-        function (error) {
-            if (!error) {
-                console.log("Insert OK");
-                return res.send("insertado correctamente")
-            } else {
-                console.log("Insert error", error);
-            }
-        });
-});
+app.get('/products', (req, res) => {
+    //se pasa una variable sencilla a la vista
+    res.render('pages/shopping', {
+        products: [
+            { producto: "Panel Solar", id: 0, precio: 2500000, url: "https://res.cloudinary.com/servicio-de-aprendizaje-nacional-sena/image/upload/v1656580953/Shopping_green/proyecto/WhatsApp_Image_2022-06-30_at_12.03.04_AM_w3wc2u.jpg" },
+            { producto: "Conector", id: 1, precio: 15000, url: "https://res.cloudinary.com/servicio-de-aprendizaje-nacional-sena/image/upload/v1656580953/Shopping_green/proyecto/WhatsApp_Image_2022-06-30_at_12.03.02_AM_1_ywgsuk.jpg" },
+            { producto: "Repuesto Adaptador", id: 2, precio: 8000, url: "https://res.cloudinary.com/servicio-de-aprendizaje-nacional-sena/image/upload/v1656580953/Shopping_green/proyecto/WhatsApp_Image_2022-06-30_at_12.03.02_AM_bynebj.jpg" },
+            { producto: "Adaptador", id: 3, precio: 50000, url: "https://res.cloudinary.com/servicio-de-aprendizaje-nacional-sena/image/upload/v1656580953/Shopping_green/proyecto/WhatsApp_Image_2022-06-30_at_12.03.01_AM_e1g5wg.jpg" },
+            { producto: "Cable Solar Fotovoltaico", id: 4, precio: 4000, url: "https://res.cloudinary.com/servicio-de-aprendizaje-nacional-sena/image/upload/v1659002519/Shopping_green/proyecto/CABLE_b7sbrx.jpg" },
+            { producto: "Bateria de Litio", id: 5, precio: 80000, url: "https://res.cloudinary.com/servicio-de-aprendizaje-nacional-sena/image/upload/v1659002528/Shopping_green/proyecto/bateria_de_litio_pjuvss.jpg" }
+        ]
+    });
+})
 
 app.get('/shopping/:idarticle', (req, res) => {
 
@@ -141,18 +126,18 @@ app.get('/shopping/:idarticle', (req, res) => {
         email = req.session.userid;
         //validamos el parametro
 
-        db.run(`INSERT INTO shopping(cod_compra,fecha,emailusu,info_product)   VALUES(?,?,?,?)`,
-            [, listo, email, id],
+        db.run(`INSERT INTO shopping(cod_compra,emailusu,info_product)   VALUES(?,?,?)`,
+            [, email, id],
 
             function (error) {
                 if (!error) {
                     res.render("pages/thanks")
-                    /*transporter.sendMail({
-                        from: 'aquaflorfloristeria@gmail.com',
+                    transporter.sendMail({
+                        from: 'shoppingreen7@gmail.com',
                         to: email,
                         subject: 'Test Email Subject',
-                        html: '<img src="https://res.cloudinary.com/dwczm63h6/image/upload/v1654784841/floristeria%20aqua/Tarjeta_de_Visita_Una_Cara_Vertical_Profesional_Morado_y_Rosa_pdmiwk.png" alt="">'
-                    }).then((res) =>{console.log(res);}).catch((err) => {console.log(err);})*/
+                        html: '<img src="https://res.cloudinary.com/servicio-de-aprendizaje-nacional-sena/image/upload/v1659013938/Shopping_green/proyecto/Tarjeta_Cuadrada_Cumplea%C3%B1os_Infantil_Verde_1_ko0txq.png" alt="Compra Exitosa">'
+                    }).then((res) =>{console.log(res);}).catch((err) => {console.log(err);})
                 }
                 if (error) {
                     return console.log("error");
@@ -166,72 +151,11 @@ app.get('/shopping/:idarticle', (req, res) => {
     };
 })
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// app.get('/comprar/:id', (req, res) => {
-//     let id = req.params.id;
-    
-//     db.get("SELECT name1, price, url FROM products WHERE id=$id", {
-//         $id: id
-//     },   
-//     function (error) {
-//         if (!error) {
-//             res.render('pages/thanks')
-//             // send email
-//             transporter.sendMail({
-//                 from: 'shoppingreen7@gmail.com',
-//                 to: email,
-//                 subject: 'Realizacion de Compra',
-//                 text: 'Hello World?',
-//                 html: '<h1>Compra exitosa</h1>'
-//             }).then((res) => { console.log(res); }).catch((err) => { console.log(err); })
-//         }
-//         if (error) {
-//             return console.log("error: ", error);
-//         }
-//     })
-    
-//     });
-
-
-
-//         )
-
-//     } else {
-//         res.render('pages/login');
-//     }
-
-//     res.render('pages/thanks');
-// })
-
-
-
-
-
 // app.get ('/logout', (req, res) => {
+//     email = req.session.userid;
 //     session = req.session;
 //     if (session.userid) {
-//         res.session.destroy();
+//         res.session.destroy(email);
 //         return res.redirect('/');
 //     }
 //     return res.send('No tiene session para cerrar');

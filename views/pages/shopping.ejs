@@ -4,43 +4,96 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Bootstrap demo</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+    <title>Shopping - Products</title>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;700&display=swap" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/e581faa0d1.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" type="text/css" href="/css/style5.css">
 </head>
 
 <body>
-    <ul class="nav">
-        <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="#">Active</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" href="#">Link</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" href="#">Link</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link disabled">Disabled</a>
-        </li>
-    </ul>
-
-    <% products.forEach((producto)=> { %>
-        <div class="card" style="width: 18rem;">
-            <img src="<%= producto.url %>" class="card-img-top" alt="...">
-            <div class="card-body">
-                <%= producto.producto %>
-                    <%= producto.precio %>
-                        <form action="/shopping/<%= producto.id %>" method="get">
-                            <button type="submit" class="btn btn-primary">Comprar</button>
-                        </form>
+    <header>
+        <nav class="menu">
+            <div class="container-logo">
+                <label class="logo">Shopping</label>
+                <label class="logo2">Green</label>
             </div>
+            <div class="container-search">
+                <input class="search-input" type="text" placeholder="Search">
+                <a class="btn-primary" href="#">Search</a>
+            </div>
+            <div class="container">
+                <ul class="menu-items">
+                    <li class="active"><a href="/products">INICIO</a></li>
+                    <li><a href="#">OFERTAS</a></li>
+                </ul>
+            </div>
+        </nav>
+        <div class="btn-profile">
+            <a href="/"><i class="fa-solid fa-user"></i></a>
         </div>
-        <% }) %>
+    </header>
+    <main>
+        <section>
+            <% products.forEach((producto)=> { %>
+                <div class="card estilo-c">
+                    <img src="<%= producto.url %>" class="card-img-top" alt="...">
+                    <div class="information">
+                        <p>
+                            <%= producto.producto %>
+                        </p>
+                        <strong>
+                            $<%=producto.precio %>
+                        </strong>
+                    </div>
+                    <form action="/shopping/<%= producto.id %>" method="get">
+                        <button type="submit" class="btn-primary1">Buy</button>
+                    </form>
+                </div>
+                <% }) %>
+        </section>
+    </main>
+    <footer>
 
-            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js"
-                integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2"
-                crossorigin="anonymous"></script>
+    <div class="footer">
+        <p>
+            Pagina realizada por: Bonterylor Marin y Nicolas Henao.
+            &copy; 2022 - Colombia
+        </p>
+    </div>
+
+        <!-- <div class="container wrap">
+            <div class="row">
+                <div class="column">
+                    <div class="footer-widget">
+                    <h2 class="widget-title">Categories</h2>
+                    <ul>
+                    <li><a href="#">About us</a></li>
+                    <li><a href="#">contact us</a></li>
+                    <li><a href="#"></a>term & condition</li>
+                    <li><a href="#"></a>return & exchange</li>
+                    <li><a href="#"></a>shipping & delivery</li>
+                    <li><a href="#"></a>private policy</li>
+                    </ul>
+                </div>
+                    </div>
+                    
+                    <div class="colomna">
+                        <div class="footer-widget">
+                            <h2 class="widget-title">Categories</h2>
+                            <div class="contact-address">
+                        
+                        </div>
+
+                        </div>
+                        
+
+                        
+
+                </div>
+            </div>
+        </div> -->
+
+    </footer>
 </body>
 
 </html>
