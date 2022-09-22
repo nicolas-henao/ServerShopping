@@ -92,7 +92,7 @@ header {
     transition: .4s ;
 }
 
-.btn-profile {
+/* .btn-profile {
     margin-right: 30px;
     font-size: 40px;
     color: #fff;
@@ -102,7 +102,7 @@ header {
 .btn-profile a {
     color: #fff;
     text-decoration: none;
-}
+} */
 
 main{
     height: 1050px;

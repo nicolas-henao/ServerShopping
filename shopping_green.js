@@ -13,8 +13,7 @@ const cookieParser = require("cookie-parser");
 app.use(cookieParser());
 const sessions = require('express-session');
 const { name } = require('ejs');
-const session = require('express-session');
-const timeEXp = 1000 * 60 * 60 * 24;
+const timeEXp = 1000 * 60 * 60 * 24;    
 app.use(sessions({
     secret: 'nbiocnonltaesylor',
     resave: false,
@@ -52,7 +51,7 @@ app.post('/logicaregister', (req, res) => {
                 return res.render('pages/registerok')
             } else {
                 console.log("Insert error", error.code);
-                if (error.code == "SQLITE_CONSTRAINTS") {
+                if (error.code == "SQLITE_CONSTRAINT") {
                     return res.send('El usurario ya existe')
                 }
                 return res.send('Ocurrio algun error');
@@ -95,9 +94,9 @@ app.post('/logicalogin', (req, res) => {
                 session.userid = email;
                 return res.render('pages/thankslogin');
             }
-            return res.send('contraseña o usuario incorrecta');
+            return res.render('pages/incorrect');
         }
-        return res.send('contraseña o usuario incorrecta');
+        return res.render('pages/incorrect');
     })
 })
 
@@ -132,12 +131,21 @@ app.get('/shopping/:idarticle', (req, res) => {
             function (error) {
                 if (!error) {
                     res.render("pages/thanks")
+                    const transporter = nodemailer.createTransport({
+                        host: 'smtp.gmail.com',
+                        port: 587,
+                        auth: {
+                            user: 'shoppingreen7@gmail.com',
+                            pass: 'bzsqzbwnihjlmnya'
+                        }
+                    });
+
                     transporter.sendMail({
                         from: 'shoppingreen7@gmail.com',
                         to: email,
-                        subject: 'Test Email Subject',
-                        html: '<img src="https://res.cloudinary.com/servicio-de-aprendizaje-nacional-sena/image/upload/v1659013938/Shopping_green/proyecto/Tarjeta_Cuadrada_Cumplea%C3%B1os_Infantil_Verde_1_ko0txq.png" alt="Compra Exitosa">'
-                    }).then((res) =>{console.log(res);}).catch((err) => {console.log(err);})
+                        subject: 'Compra Exitosa',
+                        html: '<img src="https://res.cloudinary.com/servicio-de-aprendizaje-nacional-sena/image/upload/v1659015975/Shopping_green/proyecto/Tarjeta_Cuadrada_Cumplea%C3%B1os_Infantil_Verde_2_cku8rj.png" alt="Compra Exitosa"  >'
+                    })//.then((res) =>{console.log(res);}).catch((err) => {console.log(err);})
                 }
                 if (error) {
                     return console.log("error");
